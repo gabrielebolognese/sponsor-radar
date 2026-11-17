@@ -1,0 +1,15 @@
+{
+  "name": "sponsor-radar",
+  "description": "sponsor-radar: find the brands paying creators your size, price yourself, and pitch them.",
+  "owner": {
+    "name": "Gabriele Bolognese",
+    "url": "https://github.com/gabrielebolognese"
+  },
+  "plugins": [
+    {
+      "name": "sponsor-radar",
+      "source": "./",
+      "description": "Find every brand that paid YouTube creators your size this month, with proof links, your rate, and drafted pitches."
+    }
+  ]
+}

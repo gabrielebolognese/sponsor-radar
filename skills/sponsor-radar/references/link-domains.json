@@ -1,0 +1,74 @@
+{
+  "_note": "Domain lists used by signals.py to classify links in video descriptions. Match is on the registrable domain (e.g. go.nordvpn.net -> nordvpn.net). Add domains here; no code change needed.",
+  "social": [
+    "youtube.com", "youtu.be", "instagram.com", "instagr.am", "tiktok.com", "twitter.com", "x.com",
+    "facebook.com", "fb.com", "fb.me", "threads.net", "threads.com", "linkedin.com", "lnkd.in",
+    "discord.gg", "discord.com", "discordapp.com", "twitch.tv", "kick.com", "snapchat.com",
+    "pinterest.com", "pin.it", "reddit.com", "t.me", "telegram.me", "whatsapp.com", "wa.me",
+    "spotify.com", "soundcloud.com", "bsky.app", "mastodon.social", "vimeo.com", "strava.com",
+    "tumblr.com", "medium.com"
+  ],
+  "creator_platforms": [
+    "patreon.com", "ko-fi.com", "buymeacoffee.com", "gumroad.com", "teespring.com", "creator-spring.com",
+    "fourthwall.com", "streamlabs.com", "streamelements.com", "linktr.ee", "beacons.ai", "stan.store",
+    "skool.com", "kajabi.com", "mykajabi.com", "teachable.com", "thinkific.com", "podia.com",
+    "substack.com", "bio.link", "linkin.bio", "lnk.bio", "carrd.co", "paypal.me", "paypal.com",
+    "throne.com", "throne.me", "calendly.com", "gofundme.com", "lnk.to", "smarturl.it", "ffm.to",
+    "song.link", "linkfire.com", "bandcamp.com", "bonfire.com", "redbubble.com", "memberful.com",
+    "circle.so", "notion.site", "google.com", "forms.gle", "tally.so", "typeform.com", "zoom.us",
+    "eventbrite.com", "eventbrite.it"
+  ],
+  "ignore": [
+    "wikipedia.org", "wikimedia.org", "github.com", "gitlab.com", "nih.gov", "doi.org",
+    "sciencedirect.com", "researchgate.net", "springer.com", "wiley.com", "nature.com",
+    "jamanetwork.com", "bmj.com", "archive.org", "imdb.com", "creativecommons.org", "unsplash.com",
+    "pexels.com", "pixabay.com", "freepik.com"
+  ],
+  "marketplaces": ["amazon", "amzn.to", "amzn.eu", "a.co", "ebay", "aliexpress", "temu.com"],
+  "gear": ["geni.us", "kit.co", "amzlink.to"],
+  "shorteners": [
+    "bit.ly", "bitly.com", "tinyurl.com", "ow.ly", "buff.ly", "rebrand.ly", "t.co", "goo.gl", "cutt.ly",
+    "shorturl.at", "is.gd", "rb.gy", "tiny.cc", "s.id", "bl.ink", "t.ly", "hyperurl.co", "short.gy",
+    "dub.sh", "dub.co", "linklyhq.com", "pxlme.me", "trib.al", "spoti.fi", "go.link", "snip.ly", "clck.ru"
+  ],
+  "affiliate_networks": {
+    "sjv.io": "impact", "pxf.io": "impact", "evyy.net": "impact", "ojrq.net": "impact",
+    "7eer.net": "impact", "impactradius-go.com": "impact",
+    "awin1.com": "awin", "zenaps.com": "awin",
+    "shareasale.com": "shareasale", "shrsl.com": "shareasale",
+    "linksynergy.com": "rakuten",
+    "anrdoezrs.net": "cj", "jdoqocy.com": "cj", "tkqlhce.com": "cj", "dpbolvw.net": "cj",
+    "kqzyfj.com": "cj", "emjcd.com": "cj",
+    "prf.hn": "partnerize",
+    "skimresources.com": "skimlinks", "redirectingat.com": "skimlinks",
+    "viglink.com": "sovrn", "sovrn.co": "sovrn",
+    "rstyle.me": "ltk", "liketk.it": "ltk", "shopltk.com": "ltk",
+    "shopmy.us": "shopmy", "shop-links.co": "shopmy",
+    "howl.me": "howl", "howl.link": "howl",
+    "partnerlinks.io": "partnerstack",
+    "tradedoubler.com": "tradedoubler",
+    "webgains.com": "webgains",
+    "admitad.com": "admitad",
+    "pntra.com": "pepperjam", "pjtra.com": "pepperjam", "gopjn.com": "pepperjam", "pjatr.com": "pepperjam",
+    "avantlink.com": "avantlink",
+    "flexoffers.com": "flexoffers"
+  },
+  "affiliate_params": [
+    "ref", "ref_id", "refid", "referral", "referralcode", "referral_code", "via", "aff", "aff_id", "affid",
+    "affiliate", "affiliate_id", "a_aid", "irclickid", "irgwc", "sscid", "ranmid", "raneaid", "rfsn",
+    "partner", "partnerid", "partner_id", "sca_ref", "fpr", "fp_ref", "clickid", "_ef_transaction_id"
+  ],
+  "coupon_params": ["code", "coupon", "discount", "promo", "promocode", "promo_code", "dc", "voucher"],
+  "affiliate_path_tokens": ["referral", "ref", "aff", "affiliate", "invite", "partner"],
+  "influencer_utm_mediums": [
+    "influencer", "influencers", "influence", "creator", "creators", "sponsor", "sponsored",
+    "sponsorship", "paid", "ambassador", "partner", "partners", "partnership", "affiliate", "kol",
+    "ugc", "youtuber", "influencer_marketing", "influencermarketing", "paid_social_influencer"
+  ],
+  "generic_subdomains": ["www", "go", "click", "track", "tracking", "link", "links", "l", "r", "get", "app", "shop", "store", "try", "join", "m"],
+  "multi_part_suffixes": [
+    "co.uk", "org.uk", "ac.uk", "gov.uk", "me.uk", "com.au", "net.au", "org.au", "co.nz", "co.jp",
+    "ne.jp", "co.kr", "com.br", "com.mx", "com.ar", "com.co", "com.tr", "com.cn", "com.hk", "com.sg",
+    "com.tw", "co.in", "co.za", "com.pl", "com.es", "com.pt", "co.it", "co.id", "com.my", "com.ph"
+  ]
+}

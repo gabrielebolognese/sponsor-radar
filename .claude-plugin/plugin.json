@@ -1,0 +1,13 @@
+{
+  "name": "sponsor-radar",
+  "version": "0.1.0",
+  "description": "Find every brand that paid YouTube creators your size this month, with proof links, your rate, and drafted pitches.",
+  "author": {
+    "name": "Gabriele Bolognese",
+    "url": "https://github.com/gabrielebolognese"
+  },
+  "homepage": "https://github.com/gabrielebolognese/sponsor-radar",
+  "repository": "https://github.com/gabrielebolognese/sponsor-radar",
+  "license": "MIT",
+  "keywords": ["youtube", "sponsorship", "creators", "brand-deals", "influencer-marketing", "pitch"]
+}

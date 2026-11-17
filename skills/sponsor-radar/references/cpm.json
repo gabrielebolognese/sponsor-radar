@@ -1,0 +1,31 @@
+{
+  "_note": "Starting assumptions, not market data. USD per 1,000 views for one integrated ad read (60-90 seconds) in a long-form video. sponsor-radar recalibrates these from your own closed deals once you log at least 2 in the pipeline. Edit freely.",
+  "buckets": {
+    "tech": [25, 50],
+    "finance": [25, 50],
+    "business": [25, 50],
+    "software": [25, 50],
+    "education": [20, 40],
+    "productivity": [20, 40],
+    "science": [20, 40],
+    "fitness": [15, 30],
+    "health": [15, 30],
+    "beauty": [15, 30],
+    "fashion": [15, 30],
+    "lifestyle": [15, 30],
+    "food": [15, 30],
+    "travel": [15, 30],
+    "parenting": [15, 30],
+    "outdoors": [15, 30],
+    "automotive": [15, 30],
+    "gaming": [10, 20],
+    "entertainment": [10, 20],
+    "vlog": [10, 20],
+    "comedy": [10, 20],
+    "music": [10, 20],
+    "default": [15, 30]
+  },
+  "shorts_multiplier": [0.1, 0.25],
+  "ugc_per_asset_usd": [100, 300],
+  "min_viable_rate_usd": 50
+}
