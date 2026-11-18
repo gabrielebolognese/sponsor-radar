@@ -7,7 +7,7 @@
   radar.py discover --run @handle   -> candidates.json / candidates.md   (then Claude writes exclude.json)
   radar.py select   --run @handle   -> lookalikes.json
   radar.py scan     --run @handle   -> sightings.json, ambiguous.json   (then Claude writes classified.json)
-  radar.py rank     --run @handle   -> brands.json
+  radar.py rank     --run @handle   -> brands.json, growth.json (reality check + growth target)
   radar.py contacts --run @handle   -> contacts.json
   radar.py price    --run @handle   -> rate.json
   radar.py report   --run @handle   -> report.md
@@ -191,6 +191,12 @@ def cmd_rank(a):
     for b in out["brands"][:a.show]:
         print(f"  {b['rank']:>2}. {b['name']} [{b['type']}] score {b['score']} · {b['why']}"
               + (f" · {'; '.join(b['labels'])}" if b["labels"] else ""))
+    g = out["growth"]
+    print()
+    print(f"REALISTIC={'yes' if g['realistic'] else 'no'}")
+    print(g["verdict"])
+    if not g["realistic"]:
+        print(f"Growth target details: {run_dir / 'growth.json'} (write growth-plan.md, see references/growth-plan.md)")
     print(f"Next: radar.py contacts --run {a.run}")
 
 
@@ -227,6 +233,7 @@ def cmd_brief(a):
     contacts = read_json(run_dir / "contacts.json", default={})
     rate = read_json(run_dir / "rate.json", default={})
     niche = read_json(run_dir / "niche.json", default={})
+    growth = read_json(run_dir / "growth.json", default={})
     brief = {
         "creator": {"title": prof["channel"]["title"], "handle": prof["channel"].get("handle"),
                     "subs": prof["channel"]["subs"], "median_views": prof["stats"]["median_views_long"],
@@ -234,6 +241,7 @@ def cmd_brief(a):
                     "mode": prof["mode"], "recent_titles": [v["title"] for v in prof["recent_videos"][:12]],
                     "best_videos": [v["title"] for v in sorted(prof["recent_videos"], key=lambda v: -v["views"])[:3]]},
         "rate": {k: rate.get(k) for k in ("low", "high", "currency", "basis", "explain")},
+        "growth": {k: growth.get(k) for k in ("realistic", "realistic_brands", "start_now_codes", "target", "verdict")},
         "brands": [],
     }
     for b in data["brands"][:a.top]:

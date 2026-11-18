@@ -43,6 +43,7 @@ python "${CLAUDE_SKILL_DIR}/scripts/radar.py" <command>
 Tell the user up front that it scans about 50 lookalike creators, takes around 10 minutes, and uses about 1,700 of their 10,000 free daily API units.
 
 1. **Profile.** Run `RADAR profile <channel>`. It prints the run folder, mode (UGC / Micro / Conquest), size, median views, language and recent titles.
+   - If the channel has fewer than 3 videos, or the titles don't show a clear niche, use the channel title and description. If it's still unclear, ask the user in one question what the channel is about (or is going to be about).
 2. **Niche.** Write `RUN_DIR/niche.json`, following `references/niche-and-queries.md`. The search queries you choose decide who the lookalikes are, so this is the most important judgment call in the run.
 3. **Discover.** Run `RADAR discover --run <handle>`, then read `RUN_DIR/candidates.md`.
    - Write `RUN_DIR/exclude.json` (`{"exclude": ["UC..."]}`) for off-niche channels: wrong topic, news or compilation or reupload channels, kids channels, music labels, brand channels.
@@ -61,15 +62,27 @@ Tell the user up front that it scans about 50 lookalike creators, takes around 1
    - If you find a program page or partnership email on the brand's own site or official program page, add it to that brand's entry in `contacts.json` as `"manual": "<url or email> (source: <url>)"`.
    - Don't use personal emails or data-broker sites.
 8. **Price.** Run `RADAR price --run <handle>`. If the user mentions their current rate, run `RADAR setup --rate N` first.
-9. **Report.** Run `RADAR report --run <handle>`. This writes `report.md` deterministically, so don't rewrite its numbers.
-10. **Pitches.** Run `RADAR brief --run <handle>`.
-    - Write one pitch file per brand for the top 10, into `RUN_DIR/pitches/NN-<key>.md` (for example `01-nordvpn.md`), following `references/pitch-guide.md`.
-    - Follow the mode-specific framing in `references/modes.md`.
-11. **Pipeline.** Run `RADAR pipeline add --run <handle> --top 10`.
+9. **Reality check.** `rank` printed `REALISTIC=yes` or `REALISTIC=no` and a verdict. `growth.json` holds the details.
+   - `REALISTIC=no` means no brand in the scan paid a creator within 3x of the user's subscribers and views. Pitching them now would burn the contact. Instead, write `RUN_DIR/growth-plan.md` following `references/growth-plan.md`: the growth target (the smallest creator a brand paid, with proof), the gap, and a 90-day plan built from how the user's habits compare with those creators'.
+   - `REALISTIC=yes`: carry on. The brands in `realistic_brands` are the ones to pitch first.
+10. **Report.** Run `RADAR report --run <handle>`. This writes `report.md` deterministically, so don't rewrite its numbers. When the check said no, the report leads with the growth target and links `growth-plan.md`, so write the plan first.
+11. **Pitches.**
+    - `REALISTIC=yes`: run `RADAR brief --run <handle>`. Write one pitch file per brand for the top 10, into `RUN_DIR/pitches/NN-<key>.md` (for example `01-nordvpn.md`), following `references/pitch-guide.md`. Put `realistic_brands` first, and follow the mode-specific framing in `references/modes.md`.
+    - `REALISTIC=no`: skip the sponsor pitches. Offer, in one line, to draft up to 3 UGC pitches (content for the brand's own channels, priced per asset) if the user has 3 videos they'd show a brand.
+12. **Pipeline.** Only for pitches you wrote: run `RADAR pipeline add --run <handle> --top <number of pitches>`.
 
 ### Present the results
 
 Keep the chat answer short; the report has the detail.
+
+**When the reality check said no**, lead with that and don't soften it:
+- The verdict sentence exactly as `rank` printed it: the growth target in subscribers and views, with the proof link.
+- The gap (Nx subscribers, Nx views) and the milestones.
+- The 2 biggest habit gaps, and weeks 1-4 of the plan.
+- What can pay now (promo-code programs, affiliate programs), if anything.
+- Full paths to `growth-plan.md` and `report.md`, and when to rerun.
+
+**Otherwise:**
 
 - The headline lines from `report.md`, with the numbers exactly as written there.
 - The top 10: brand, why it's ranked there, deal type, and one proof link each.

@@ -168,6 +168,17 @@ class TestEndToEnd(unittest.TestCase):
     def test_kids_channel_brand_absent(self):
         self.assertFalse(any(b["key"] == "toyco" for b in self.brands["brands"]))
 
+    def test_growth_reality_check(self):
+        g = json.loads((self.run_dir / "growth.json").read_text(encoding="utf-8"))
+        self.assertTrue(g["realistic"])  # Luca (15k subs, 9k views) is within 3x of 12k subs / 8k views
+        self.assertIn("NordVPN", g["realistic_brands"])
+        self.assertIn("REALISTIC=yes", self.out["rank"])
+        text = (self.run_dir / "report.md").read_text(encoding="utf-8")
+        self.assertIn("**Within reach:**", text)
+        self.assertNotIn("## Not yet", text)
+        brief = json.loads((self.run_dir / "pitch_brief.json").read_text(encoding="utf-8"))
+        self.assertTrue(brief["growth"]["realistic"])
+
     # ---- contacts / price / report / pipeline ----
 
     def test_contacts(self):

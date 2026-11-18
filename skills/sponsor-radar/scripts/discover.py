@@ -110,10 +110,14 @@ def run_select(run_dir, cfg: dict) -> dict:
     keep = [c for c in cands if c["id"] not in excluded]
     by = {b: [c for c in keep if c["band"] == b] for b in BAND_ORDER}
     max_total = int(cfg.get("max_lookalikes", 50))
-    n_core = min(len(by["core"]), round(max_total * 0.7))
-    n_big = min(len(by["bigger"]), max_total - n_core)
-    pick = by["core"][:n_core] + by["bigger"][:n_big]
-    leftovers = by["core"][n_core:] + by["bigger"][n_big:] + by["smaller"]
+    mode = read_json(run_dir / "profile.json", default={}).get("mode")
+    # Under 1k subs, deliberately sample the small band too: the growth target is
+    # "the smallest creator a brand paid", and we can only find it if small creators get scanned.
+    want = {"core": round(max_total * 0.6), "smaller": round(max_total * 0.2)} if mode == "ugc"         else {"core": round(max_total * 0.7), "smaller": 0}
+    pick = by["core"][:want["core"]] + by["smaller"][:want["smaller"]]
+    pick += by["bigger"][: max(0, max_total - len(pick))]
+    chosen = {c["id"] for c in pick}
+    leftovers = [c for b in ("core", "bigger", "smaller") for c in by[b] if c["id"] not in chosen]
     pick += leftovers[: max(0, max_total - len(pick))]
     write_json(run_dir / "lookalikes.json", {"creators": pick, "excluded": sorted(excluded)})
     return {"selected": len(pick), "excluded": len(excluded),

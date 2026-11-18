@@ -5,6 +5,7 @@ from collections import defaultdict
 from datetime import datetime
 
 from common import age_days, iso, read_json, slug, write_json
+from growth import compute_growth
 from signals import brand_key
 
 DEFAULT_WEIGHTS = {
@@ -99,6 +100,9 @@ def run_rank(run_dir, cfg: dict, now: datetime) -> dict:
     for s in own_s:
         own_by_brand[s["brand_key"]].append(s)
     user_has_sponsors = any(s["type"] in ("sponsored", "code") for s in own_s)
+    # Under 1k subs nobody is really "your size": the core band is small creators (2k-50k subs).
+    size_word = "small creator" if mode == "ugc" else "creator"
+    size_tag = "with 2k-50k subs" if mode == "ugc" else "your size"
 
     brands: dict[str, dict] = {}
     for s in look_s:
@@ -151,7 +155,8 @@ def run_rank(run_dir, cfg: dict, now: datetime) -> dict:
         own_hits = own_by_brand.get(key, [])
         labels = []
         if n_core:
-            labels.append(f"{n_core} creator{'s' if n_core != 1 else ''} your size")
+            labels.append(f"{n_core} {size_word}{'s' if n_core != 1 else ''}"
+                          + (" your size" if mode != "ugc" else ""))
         elif deal_creators and all(ce["size"] in ("bigger", "giant") for ce in deal_creators):
             labels.append("only sponsors bigger creators")
         if repeat >= 2:
@@ -175,7 +180,7 @@ def run_rank(run_dir, cfg: dict, now: datetime) -> dict:
         why_bits = []
         if deal_creators:
             why_bits.append(f"{len(deal_creators)} creator{'s' if len(deal_creators) != 1 else ''} "
-                            f"({n_core} your size)")
+                            f"({n_core} {size_tag})")
         why_bits.append(f"last seen {int(last)}d ago")
         if lang_fit == 1 and user_lang and user_lang in langs:
             why_bits.append(f"same language ({user_lang})")
@@ -227,4 +232,7 @@ def run_rank(run_dir, cfg: dict, now: datetime) -> dict:
     out = {"generated_at": iso(now), "mode": mode, "headline": headline, "brands": ranked,
            "affiliate_only": affiliate_only, "weights": w}
     write_json(run_dir / "brands.json", out)
+    growth = compute_growth(profile, creators, look_s, names, cfg, now)
+    write_json(run_dir / "growth.json", growth)
+    out["growth"] = growth
     return out

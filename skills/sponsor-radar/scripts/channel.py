@@ -66,6 +66,7 @@ def channel_summary(item: dict) -> dict:
         "default_language": sn.get("defaultLanguage"),
         "description": (sn.get("description") or "")[:1500],
         "uploads": cd.get("relatedPlaylists", {}).get("uploads"),
+        "published_at": sn.get("publishedAt"),
         "topics": [t.rsplit("/", 1)[-1].replace("_", " ")
                    for t in item.get("topicDetails", {}).get("topicCategories", [])],
     }
@@ -99,6 +100,8 @@ def creator_stats(videos: list[dict], now: datetime) -> dict:
     shorts = [v for v in mature if v["is_short"]][:10]
     langs = Counter(v["language"] for v in vids if v.get("language"))
     recent90 = [v for v in vids if v.get("published_at") and age_days(v["published_at"], now) <= 90]
+    long_all = [v for v in vids if not v["is_short"] and v.get("duration_s")]
+    top = sorted(recent90 or vids, key=lambda v: -(v.get("views") or 0))[:3]
     return {
         "median_views_long": median([v["views"] for v in long_]),
         "median_views_shorts": median([v["views"] for v in shorts]),
@@ -108,6 +111,10 @@ def creator_stats(videos: list[dict], now: datetime) -> dict:
         "uploads_per_month_90d": round(len(recent90) / 3, 1),
         "last_upload": vids[0]["published_at"] if vids else None,
         "paid_flag_count": sum(1 for v in vids if v.get("paid_flag")),
+        "shorts_share": round(sum(1 for v in vids if v["is_short"]) / len(vids), 2) if vids else None,
+        "median_duration_long_min": round(median([v["duration_s"] for v in long_all]) / 60, 1) if long_all else None,
+        "first_upload": vids[-1]["published_at"] if vids else None,
+        "top_videos": [{"title": v["title"], "views": v["views"], "is_short": v["is_short"]} for v in top],
     }
 
 

@@ -19,6 +19,10 @@ Brands that sponsor creators leave public evidence everywhere: "this video is sp
 - **Your rate:** median views of your last 10 long-form videos x the CPM range for your niche. For example, 8,000 views x $15-30 = **$120-240 per integration**. The CPM range starts as an assumption and recalibrates from your own closed deals.
 - **10 drafted pitches**, each with 2 follow-ups, written from the evidence ("you sponsored X and Y last month..."), with a 60-second integration concept and your rate.
 - **A pipeline** (`pipeline.csv`, which opens in Sheets or Excel) that tracks drafted, pitched, replied, negotiating and closed, with follow-up reminders.
+- **A reality check.** If no brand pays creators within 3x of your size, it says so instead of handing you pitches that will be ignored. Instead you get:
+  - **A growth target:** the smallest creator in your niche that a brand actually paid, in subscribers and views per video, with the proof video.
+  - **The gap** between you and that target.
+  - **A 90-day plan**, built from what those creators do differently: upload rate, Shorts mix, video length.
 
 It switches mode based on your size:
 
@@ -72,7 +76,7 @@ Everything is written to `~/.sponsor-radar/runs/<handle>/<date>/`: `report.md`, 
 ## How it works
 
 ```
-profile ─▶ niche (Claude) ─▶ discover ─▶ prune (Claude) ─▶ scan ─▶ classify (Claude) ─▶ rank ─▶ contacts ─▶ price ─▶ report ─▶ pitches (Claude)
+profile ─▶ niche (Claude) ─▶ discover ─▶ prune (Claude) ─▶ scan ─▶ classify (Claude) ─▶ rank + reality check ─▶ contacts ─▶ price ─▶ report ─▶ pitches or growth plan (Claude)
 ```
 
 - **Scripts do the deterministic work:** YouTube API calls, caching, link decoding, regex, scoring, files. They live in `skills/sponsor-radar/scripts/` and use only the Python standard library.

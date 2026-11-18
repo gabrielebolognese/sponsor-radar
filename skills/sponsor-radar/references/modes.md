@@ -14,6 +14,8 @@ The mode comes from subscriber count (`channel.py: mode_for`, `bands_for`). It c
 
 ### UGC
 
+- The lookalike sample is 60% core band, 20% small creators (500-1,999 subs) and 20% bigger. The small slice is there to find the growth target: the smallest creator a brand actually paid.
+- Most sub-1k channels get `REALISTIC=no`. In that case, lead with the growth target and `growth-plan.md` (see SKILL.md step 9), not with the brand list.
 - The headline is the brands that pay small creators.
 - Then the "Affiliate programs your lookalikes use" section from the report. Those are the easiest first yes.
 - The rate is per asset: brands buy the video, not the views.
