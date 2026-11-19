@@ -1,11 +1,11 @@
-# sponsor-radar: v1 build plan
+# sponsor-sleuth: v1 build plan
 
 ## 0. What v1 ships
 
 One command, run locally with the user's own YouTube API key, done in under 10 minutes:
 
 ```
-/sponsor-radar @handle
+/sponsor-sleuth @handle
 ```
 
 Output:
@@ -14,7 +14,7 @@ Output:
 - 10 drafted pitches, each with 2 follow-ups
 - a pipeline file with follow-up reminders
 
-Plus three small commands: `/sponsor-radar setup`, `/sponsor-radar pipeline`, `/sponsor-radar update <brand> <status> [amount]`.
+Plus three small commands: `/sponsor-sleuth setup`, `/sponsor-sleuth pipeline`, `/sponsor-sleuth update <brand> <status> [amount]`.
 
 **Not in v1:** podcasts, Instagram/TikTok, the shared database, any automated sending, an HTML dashboard (stretch goal for the demo video).
 
@@ -48,12 +48,12 @@ Claude is the host LLM, so users don't need an Anthropic API key.
 **Repo layout:**
 
 ```
-sponsor-radar/
+sponsor-sleuth/
   .claude-plugin/plugin.json
-  skills/sponsor-radar/
+  skills/sponsor-sleuth/
     SKILL.md                    # the orchestration Claude follows
     scripts/
-      radar.py                  # CLI entry: profile | discover | scan | rank | contacts | price | pipeline
+      sleuth.py                  # CLI entry: profile | discover | scan | rank | contacts | price | pipeline
       yt.py                     # API client, cache, quota ledger, retries
       signals.py                # multilingual regex, link classifier
       transcripts.py            # best-effort ad-read extraction
@@ -72,7 +72,7 @@ sponsor-radar/
   README.md
 ```
 
-**Local state** in `~/.sponsor-radar/`:
+**Local state** in `~/.sponsor-sleuth/`:
 - `config.json`: API key, currency, your current rate (optional)
 - `cache.db`: API response cache (7-day TTL) and a quota ledger
 - `pipeline.csv`
@@ -174,7 +174,7 @@ Every brand gets a one-line "why it's ranked here".
 ### Stage 9: Pipeline (script)
 - `pipeline.csv` columns: brand, contact, status (drafted / pitched / replied / negotiating / closed / lost), pitched_at, next_followup, amount, currency, views_at_deal, notes.
 - CSV so it opens in Sheets or Excel.
-- `/sponsor-radar pipeline` shows the table and any overdue follow-ups. `/sponsor-radar update` moves a deal along, and closing one with an amount feeds price calibration.
+- `/sponsor-sleuth pipeline` shows the table and any overdue follow-ups. `/sponsor-sleuth update` moves a deal along, and closing one with an amount feeds price calibration.
 
 ---
 

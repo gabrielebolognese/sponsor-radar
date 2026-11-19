@@ -142,5 +142,22 @@ class TestPipeline(unittest.TestCase):
             self.P.update("nordvpn", "maybe", date(2026, 11, 17), path=self.path)
 
 
+class TestLegacyHome(unittest.TestCase):
+    def test_v01_folder_is_carried_over(self):
+        import os
+        from unittest import mock
+        import common
+        with tempfile.TemporaryDirectory() as d:
+            fake_home = Path(d)
+            (fake_home / ".sponsor-radar").mkdir()
+            (fake_home / ".sponsor-radar" / "config.json").write_text("{}", encoding="utf-8")
+            env = {k: v for k, v in os.environ.items() if k != "SPONSOR_SLEUTH_HOME"}
+            with mock.patch.dict(os.environ, env, clear=True), mock.patch.object(Path, "home", return_value=fake_home):
+                h = common.home()
+            self.assertEqual(h, fake_home / ".sponsor-sleuth")
+            self.assertTrue((h / "config.json").exists())
+            self.assertFalse((fake_home / ".sponsor-radar").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

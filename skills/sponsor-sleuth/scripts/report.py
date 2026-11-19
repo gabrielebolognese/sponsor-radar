@@ -88,7 +88,7 @@ def build_report(run_dir) -> str:
     ch, st, h = profile["channel"], profile["stats"], data["headline"]
     brands = data["brands"]
     L = []
-    L.append(f"# sponsor-radar: {ch['title']} ({ch.get('handle') or profile['input']})")
+    L.append(f"# sponsor-sleuth: {ch['title']} ({ch.get('handle') or profile['input']})")
     L.append("")
     L.append(f"{MODE_NAMES.get(profile['mode'], profile['mode'])} · {fmt_int(ch.get('subs'))} subscribers · "
              f"median {fmt_int(st.get('median_views_long'))} views (last 10 long-form) · "

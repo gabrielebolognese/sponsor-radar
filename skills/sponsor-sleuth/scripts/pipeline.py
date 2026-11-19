@@ -44,7 +44,7 @@ def find(rows: list[dict], query: str) -> dict:
     if len(partial) == 1:
         return partial[0]
     if not partial:
-        raise SystemExit(f"No pipeline entry matches '{query}'. Run: radar.py pipeline list")
+        raise SystemExit(f"No pipeline entry matches '{query}'. Run: sleuth.py pipeline list")
     raise SystemExit(f"'{query}' matches several entries: " + ", ".join(r["brand"] for r in partial))
 
 
@@ -128,7 +128,7 @@ def closed_deals(rows: list[dict] | None = None) -> list[dict]:
 
 def render(rows: list[dict], today: date) -> str:
     if not rows:
-        return "Pipeline is empty. After a scan: radar.py pipeline add --run @handle"
+        return "Pipeline is empty. After a scan: sleuth.py pipeline add --run @handle"
     order = {s: i for i, s in enumerate(["negotiating", "replied", "pitched", "drafted", "closed", "lost"])}
     rows = sorted(rows, key=lambda r: (order.get(r["status"], 9), r["next_followup"] or "9999"))
     out = ["| brand | status | contact | pitched | follow-up due | amount |", "|---|---|---|---|---|---|"]

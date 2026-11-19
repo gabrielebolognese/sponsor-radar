@@ -1,5 +1,5 @@
 {
-  "_note": "Starting assumptions, not market data. USD per 1,000 views for one integrated ad read (60-90 seconds) in a long-form video. sponsor-radar recalibrates these from your own closed deals once you log at least 2 in the pipeline. Edit freely.",
+  "_note": "Starting assumptions, not market data. USD per 1,000 views for one integrated ad read (60-90 seconds) in a long-form video. sponsor-sleuth recalibrates these from your own closed deals once you log at least 2 in the pipeline. Edit freely.",
   "buckets": {
     "tech": [25, 50],
     "finance": [25, 50],

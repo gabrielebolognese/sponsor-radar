@@ -1,11 +1,11 @@
-# sponsor-radar
+# sponsor-sleuth
 
 **Find every brand that paid creators your size this month, and pitch them all in 10 minutes.**
 
-Brands that sponsor creators leave public evidence everywhere: "this video is sponsored by", promo codes, tracking links, YouTube's paid-promotion flag. sponsor-radar is a Claude Code skill that collects that evidence from creators who look like you and turns it into a ranked list of brands that are spending money right now, at your size, in your niche. Every brand comes with a link to the exact video it was found in.
+Brands that sponsor creators leave public evidence everywhere: "this video is sponsored by", promo codes, tracking links, YouTube's paid-promotion flag. sponsor-sleuth is a Claude Code skill that collects that evidence from creators who look like you and turns it into a ranked list of brands that are spending money right now, at your size, in your niche. Every brand comes with a link to the exact video it was found in.
 
 ```
-/sponsor-radar @yourchannel
+/sponsor-sleuth @yourchannel
 ```
 
 ## What you get
@@ -39,17 +39,17 @@ Requires [Claude Code](https://claude.com/claude-code) and Python 3.10+. There a
 **As a plugin:**
 
 ```
-/plugin marketplace add gabrielebolognese/sponsor-radar
-/plugin install sponsor-radar@sponsor-radar
+/plugin marketplace add gabrielebolognese/sponsor-sleuth
+/plugin install sponsor-sleuth@sponsor-sleuth
 ```
 
-Plugin skills are namespaced, so the command is `/sponsor-radar:sponsor-radar @yourchannel`. You can also just ask Claude "find sponsors for @yourchannel".
+Plugin skills are namespaced, so the command is `/sponsor-sleuth:sponsor-sleuth @yourchannel`. You can also just ask Claude "find sponsors for @yourchannel".
 
-**Or as a plain skill**, which gives you the shorter `/sponsor-radar` command:
+**Or as a plain skill**, which gives you the shorter `/sponsor-sleuth` command:
 
 ```bash
-git clone https://github.com/gabrielebolognese/sponsor-radar
-cp -r sponsor-radar/skills/sponsor-radar ~/.claude/skills/
+git clone https://github.com/gabrielebolognese/sponsor-sleuth
+cp -r sponsor-sleuth/skills/sponsor-sleuth ~/.claude/skills/
 ```
 
 ### Get a YouTube API key (free, about 5 minutes)
@@ -57,7 +57,7 @@ cp -r sponsor-radar/skills/sponsor-radar ~/.claude/skills/
 1. Open [Google Cloud Console](https://console.cloud.google.com/) and create a project.
 2. Go to **APIs & Services > Library** and enable **YouTube Data API v3**.
 3. Go to **APIs & Services > Credentials > Create credentials > API key**. Restricting the key to the YouTube Data API v3 is a good idea.
-4. Run `/sponsor-radar setup` and paste the key when asked, or set the `YOUTUBE_API_KEY` environment variable.
+4. Run `/sponsor-sleuth setup` and paste the key when asked, or set the `YOUTUBE_API_KEY` environment variable.
 
 **Optional:** `pip install youtube-transcript-api` turns on ad-read detection in video transcripts (best-effort, see Limits).
 
@@ -65,13 +65,13 @@ cp -r sponsor-radar/skills/sponsor-radar ~/.claude/skills/
 
 | Command | What it does |
 |---|---|
-| `/sponsor-radar @yourchannel` | Full scan: report, rate, 10 pitches, pipeline entries |
-| `/sponsor-radar pipeline` | Your pipeline, plus the follow-ups due today and their drafts |
-| `/sponsor-radar update NordVPN pitched` | Moves a deal along. `pitched` schedules follow-ups at day 4 and day 10 |
-| `/sponsor-radar update NordVPN closed 300` | Logs a closed deal. After 2, your rate calibrates from real prices |
-| `/sponsor-radar setup` | Sets the API key, currency, and your current rate (for the rate check) |
+| `/sponsor-sleuth @yourchannel` | Full scan: report, rate, 10 pitches, pipeline entries |
+| `/sponsor-sleuth pipeline` | Your pipeline, plus the follow-ups due today and their drafts |
+| `/sponsor-sleuth update NordVPN pitched` | Moves a deal along. `pitched` schedules follow-ups at day 4 and day 10 |
+| `/sponsor-sleuth update NordVPN closed 300` | Logs a closed deal. After 2, your rate calibrates from real prices |
+| `/sponsor-sleuth setup` | Sets the API key, currency, and your current rate (for the rate check) |
 
-Everything is written to `~/.sponsor-radar/runs/<handle>/<date>/`: `report.md`, `pitches/`, and every intermediate file, so you can audit how each brand got on the list.
+Everything is written to `~/.sponsor-sleuth/runs/<handle>/<date>/`: `report.md`, `pitches/`, and every intermediate file, so you can audit how each brand got on the list.
 
 ## How it works
 
@@ -79,7 +79,7 @@ Everything is written to `~/.sponsor-radar/runs/<handle>/<date>/`: `report.md`, 
 profile ─▶ niche (Claude) ─▶ discover ─▶ prune (Claude) ─▶ scan ─▶ classify (Claude) ─▶ rank + reality check ─▶ contacts ─▶ price ─▶ report ─▶ pitches or growth plan (Claude)
 ```
 
-- **Scripts do the deterministic work:** YouTube API calls, caching, link decoding, regex, scoring, files. They live in `skills/sponsor-radar/scripts/` and use only the Python standard library.
+- **Scripts do the deterministic work:** YouTube API calls, caching, link decoding, regex, scoring, files. They live in `skills/sponsor-sleuth/scripts/` and use only the Python standard library.
 - **Claude does the judgment:** turning your channel into search queries, dropping off-niche lookalikes, classifying unclear signals (is this the creator's own merch or a sponsor?), and writing pitches. Claude is the host, so you don't need an Anthropic API key.
 
 **Detection layers**, strongest first:
@@ -119,7 +119,7 @@ That's about 6 full scans a day. Searches are cached for a week and everything e
 - **It drafts, you send.** No automated emailing or DMs. That keeps it GDPR-friendly and keeps your domain off spam lists.
 - **Every brand has a proof link.** Brands are never inferred from general knowledge.
 - **Public pages only.** It respects robots.txt and stays at 1 request per second per site. LinkedIn is never scraped; you get a search link instead.
-- **Your data stays local.** Your API key, runs and pipeline live in `~/.sponsor-radar/`. There's no telemetry.
+- **Your data stays local.** Your API key, runs and pipeline live in `~/.sponsor-sleuth/`. There's no telemetry.
 
 ## Limits
 
@@ -133,12 +133,12 @@ That's about 6 full scans a day. Searches are cached for a week and everything e
 
 ```bash
 python -m unittest discover -s tests -v   # unit + offline end-to-end, no key or network needed
-python skills/sponsor-radar/scripts/radar.py --help
+python skills/sponsor-sleuth/scripts/sleuth.py --help
 ```
 
 - **Add a phrase or a language:** edit `_SPONSOR_SRC` and `_CODE_SRC_CI` in `scripts/signals.py` and add a test in `tests/test_signals.py`.
 - **Add a domain** (an affiliate network, shortener, creator platform...): edit `references/link-domains.json`. No code change needed.
-- **Tune the ranking:** override any weight in `~/.sponsor-radar/config.json` under `"weights"` (see `DEFAULT_WEIGHTS` in `scripts/rank.py`).
+- **Tune the ranking:** override any weight in `~/.sponsor-sleuth/config.json` under `"weights"` (see `DEFAULT_WEIGHTS` in `scripts/rank.py`).
 
 The original design notes are in [`docs/plan.md`](docs/plan.md).
 

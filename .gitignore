@@ -7,7 +7,7 @@ venv/
 .DS_Store
 Thumbs.db
 # local runs and config never belong in the repo
-.sponsor-radar/
+.sponsor-sleuth/
 runs/
 config.json
 pipeline.csv

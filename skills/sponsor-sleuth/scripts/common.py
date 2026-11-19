@@ -12,14 +12,14 @@ from pathlib import Path
 SCRIPTS_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPTS_DIR.parent
 REFERENCES = SKILL_DIR / "references"
-VERSION = "0.1.0"
-USER_AGENT = f"Mozilla/5.0 (compatible; sponsor-radar/{VERSION})"
+VERSION = "0.2.0"
+USER_AGENT = f"Mozilla/5.0 (compatible; sponsor-sleuth/{VERSION})"
 
 DEFAULT_CONFIG = {
     "youtube_api_key": "",
     "currency": "USD",
     "current_rate": None,
-    # Approximate. Edit in ~/.sponsor-radar/config.json if you want exact numbers.
+    # Approximate. Edit in ~/.sponsor-sleuth/config.json if you want exact numbers.
     "fx_from_usd": {
         "USD": 1.0, "EUR": 0.92, "GBP": 0.79, "CHF": 0.88, "CAD": 1.37,
         "AUD": 1.52, "BRL": 5.4, "MXN": 18.0, "INR": 84.0, "JPY": 150.0,
@@ -35,7 +35,14 @@ DEFAULT_CONFIG = {
 # ---------- paths ----------
 
 def home() -> Path:
-    p = Path(os.environ.get("SPONSOR_RADAR_HOME") or (Path.home() / ".sponsor-radar"))
+    env = os.environ.get("SPONSOR_SLEUTH_HOME")
+    p = Path(env) if env else Path.home() / ".sponsor-sleuth"
+    legacy = Path.home() / ".sponsor-radar"  # v0.1 was called sponsor-radar: carry its key, runs and pipeline over
+    if not env and not p.exists() and legacy.is_dir():
+        try:
+            legacy.rename(p)
+        except OSError:
+            pass
     p.mkdir(parents=True, exist_ok=True)
     return p
 
@@ -71,7 +78,7 @@ def resolve_run(arg: str) -> Path:
         runs = sorted(d for d in base.iterdir() if d.is_dir())
         if runs:
             return runs[-1]
-    raise SystemExit(f"No run found for '{arg}'. Start one with: radar.py profile @handle")
+    raise SystemExit(f"No run found for '{arg}'. Start one with: sleuth.py profile @handle")
 
 
 # ---------- config ----------
@@ -128,7 +135,7 @@ def write_json(path: Path, data) -> Path:
 # ---------- dates ----------
 
 def now_utc() -> datetime:
-    fixed = os.environ.get("SPONSOR_RADAR_NOW")
+    fixed = os.environ.get("SPONSOR_SLEUTH_NOW")
     if fixed:
         return parse_iso(fixed)
     return datetime.now(timezone.utc)

@@ -19,18 +19,18 @@ class TestEndToEnd(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
-        cls.env = mock.patch.dict(os.environ, {"SPONSOR_RADAR_HOME": cls.tmp.name,
-                                               "SPONSOR_RADAR_NOW": fakes.NOW_ISO,
+        cls.env = mock.patch.dict(os.environ, {"SPONSOR_SLEUTH_HOME": cls.tmp.name,
+                                               "SPONSOR_SLEUTH_NOW": fakes.NOW_ISO,
                                                "YOUTUBE_API_KEY": "test-key"})
         cls.env.start()
         import contacts
-        import radar
+        import sleuth
         import transcripts
         from yt import YouTube
         cls.api = fakes.FakeYouTubeAPI()
         real_tf = transcripts.TranscriptFetcher
         patches = [
-            mock.patch.object(radar, "_yt", lambda cfg: YouTube("k", None, transport=cls.api, sleep=lambda s: None)),
+            mock.patch.object(sleuth, "_yt", lambda cfg: YouTube("k", None, transport=cls.api, sleep=lambda s: None)),
             mock.patch.object(transcripts, "TranscriptFetcher",
                               lambda max_fetches=100: real_tf(max_fetches=max_fetches,
                                                               backend=fakes.fake_transcript_backend,
@@ -40,7 +40,7 @@ class TestEndToEnd(unittest.TestCase):
         for p in patches:
             p.start()
         cls.patches = patches
-        cls.radar = radar
+        cls.sleuth = sleuth
         cls.out = {}
 
         cls.cli("setup", "--currency", "EUR", "--rate", "80")
@@ -84,7 +84,7 @@ class TestEndToEnd(unittest.TestCase):
     def cli(cls, *argv):
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
-            cls.radar.main(list(argv))
+            cls.sleuth.main(list(argv))
         return buf.getvalue()
 
     def brand(self, key):

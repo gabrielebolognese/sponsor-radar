@@ -58,7 +58,7 @@ Output: `RUN_DIR/growth-plan.md`. Write it in the language the user is chatting 
 
 ## Check-in
 
-Run `/sponsor-radar @<handle>` again every 30 days, or at each milestone. The gap in the report should shrink. When it says `REALISTIC=yes`, sponsor pitches unlock.
+Run `/sponsor-sleuth @<handle>` again every 30 days, or at each milestone. The gap in the report should shrink. When it says `REALISTIC=yes`, sponsor pitches unlock.
 ```
 
 ## Choosing the phases
@@ -67,4 +67,4 @@ Run `/sponsor-radar @<handle>` again every 30 days, or at each milestone. The ga
 2. Phase 1 builds the habit: a cadence the user can hold for 4 weeks. Its goal is the first milestone, or a median-views number if subscribers are already close.
 3. Phase 2 doubles down on whatever got the most views in phase 1. Tell the user to check their own analytics, because we can't see watch time or retention.
 4. Phase 3 moves toward the floor creators' cadence and format mix. It also builds the 3-video portfolio that UGC pitches need.
-5. If the channel has fewer than 3 videos, phase 1 is simply to publish the first 4-6 videos in the niche, then rerun the radar so the comparison has real data.
+5. If the channel has fewer than 3 videos, phase 1 is simply to publish the first 4-6 videos in the niche, then rerun sponsor-sleuth so the comparison has real data.

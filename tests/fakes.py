@@ -6,7 +6,7 @@ import urllib.parse
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-SCRIPTS = Path(__file__).resolve().parent.parent / "skills" / "sponsor-radar" / "scripts"
+SCRIPTS = Path(__file__).resolve().parent.parent / "skills" / "sponsor-sleuth" / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
@@ -40,7 +40,7 @@ PLAIN_IT = "Allenamento completo a corpo libero.\n\nInstagram: https://instagram
 
 
 class FakeYouTubeAPI:
-    """Callable transport: url -> (status, json). Mimics the endpoints radar uses."""
+    """Callable transport: url -> (status, json). Mimics the endpoints sponsor-sleuth uses."""
 
     def __init__(self):
         self.calls = []

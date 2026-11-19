@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""sponsor-radar CLI. Each subcommand is one pipeline stage; outputs go to ~/.sponsor-radar/runs/<handle>/<date>/.
+"""sponsor-sleuth CLI. Each subcommand is one pipeline stage; outputs go to ~/.sponsor-sleuth/runs/<handle>/<date>/.
 
-  radar.py setup --key YOUR_KEY [--currency EUR] [--rate 150]
-  radar.py check
-  radar.py profile @handle          -> profile.json   (then Claude writes niche.json)
-  radar.py discover --run @handle   -> candidates.json / candidates.md   (then Claude writes exclude.json)
-  radar.py select   --run @handle   -> lookalikes.json
-  radar.py scan     --run @handle   -> sightings.json, ambiguous.json   (then Claude writes classified.json)
-  radar.py rank     --run @handle   -> brands.json, growth.json (reality check + growth target)
-  radar.py contacts --run @handle   -> contacts.json
-  radar.py price    --run @handle   -> rate.json
-  radar.py report   --run @handle   -> report.md
-  radar.py brief    --run @handle   -> pitch_brief.json (input for writing pitches)
-  radar.py pipeline list | due | add --run @handle | update <brand> <status> [--amount N]
-  radar.py quota | runs
+  sleuth.py setup --key YOUR_KEY [--currency EUR] [--rate 150]
+  sleuth.py check
+  sleuth.py profile @handle          -> profile.json   (then Claude writes niche.json)
+  sleuth.py discover --run @handle   -> candidates.json / candidates.md   (then Claude writes exclude.json)
+  sleuth.py select   --run @handle   -> lookalikes.json
+  sleuth.py scan     --run @handle   -> sightings.json, ambiguous.json   (then Claude writes classified.json)
+  sleuth.py rank     --run @handle   -> brands.json, growth.json (reality check + growth target)
+  sleuth.py contacts --run @handle   -> contacts.json
+  sleuth.py price    --run @handle   -> rate.json
+  sleuth.py report   --run @handle   -> report.md
+  sleuth.py brief    --run @handle   -> pitch_brief.json (input for writing pitches)
+  sleuth.py pipeline list | due | add --run @handle | update <brand> <status> [--amount N]
+  sleuth.py quota | runs
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ SETUP_HELP = """No YouTube API key configured. Get one (free, ~5 minutes):
   2. APIs & Services -> Library -> enable "YouTube Data API v3"
   3. APIs & Services -> Credentials -> Create credentials -> API key
      (optional but smart: restrict the key to the YouTube Data API v3)
-  4. Run:  radar.py setup --key YOUR_KEY
+  4. Run:  sleuth.py setup --key YOUR_KEY
 Or set the YOUTUBE_API_KEY environment variable."""
 
 
@@ -115,7 +115,7 @@ def cmd_profile(a):
     print("recent titles:")
     for v in prof["recent_videos"][:15]:
         print(f"  - {v['title']}{' [short]' if v['is_short'] else ''}")
-    print(f"\nNext: write {run_dir / 'niche.json'} (see references/niche-and-queries.md), then: radar.py discover --run {handle}")
+    print(f"\nNext: write {run_dir / 'niche.json'} (see references/niche-and-queries.md), then: sleuth.py discover --run {handle}")
 
 
 def cmd_discover(a):
@@ -131,7 +131,7 @@ def cmd_discover(a):
           f"(core {s['by_band']['core']}, bigger {s['by_band']['bigger']}, smaller {s['by_band']['smaller']}); "
           f"{s['out_of_band']} out of band, {s['excluded_by_terms']} excluded by terms.")
     print(f"Review: {run_dir / 'candidates.md'}")
-    print(f"Next: write exclude.json for off-niche channels (or skip), then: radar.py select --run {a.run}")
+    print(f"Next: write exclude.json for off-niche channels (or skip), then: sleuth.py select --run {a.run}")
 
 
 def cmd_select(a):
@@ -142,7 +142,7 @@ def cmd_select(a):
           f"smaller {s['by_band']['smaller']}); {s['excluded']} excluded.")
     if s["selected"] < 10:
         print("WARNING: fewer than 10 lookalikes. Results will be thin; consider broader queries in niche.json.")
-    print(f"Next: radar.py scan --run {a.run}")
+    print(f"Next: sleuth.py scan --run {a.run}")
 
 
 def cmd_scan(a):
@@ -172,7 +172,7 @@ def cmd_scan(a):
         print("note:", e)
     print(f"Ambiguous items for Claude: {s['ambiguous']}" + (f" ({s['ambiguous_dropped']} dropped)" if s["ambiguous_dropped"] else ""))
     print(f"Next: classify {run_dir / 'ambiguous.json'} -> classified.json (references/classification.md), "
-          f"then: radar.py rank --run {a.run}")
+          f"then: sleuth.py rank --run {a.run}")
 
 
 def cmd_rank(a):
@@ -197,7 +197,7 @@ def cmd_rank(a):
     print(g["verdict"])
     if not g["realistic"]:
         print(f"Growth target details: {run_dir / 'growth.json'} (write growth-plan.md, see references/growth-plan.md)")
-    print(f"Next: radar.py contacts --run {a.run}")
+    print(f"Next: sleuth.py contacts --run {a.run}")
 
 
 def cmd_contacts(a):
@@ -277,7 +277,7 @@ def cmd_pipeline(a):
         print(f"Added {len(added)} brands as 'drafted' -> {P.pipeline_file()}")
     elif a.action == "update":
         if not a.brand or not a.status:
-            raise SystemExit("usage: radar.py pipeline update <brand> <status> [--amount N]")
+            raise SystemExit("usage: sleuth.py pipeline update <brand> <status> [--amount N]")
         r = P.update(a.brand, a.status, today, amount=a.amount, currency=a.currency, views=a.views,
                      contact=a.contact, note=a.note)
         print(f"{r['brand']}: {r['status']}" + (f", next follow-up {r['next_followup']}" if r["next_followup"] else ""))
@@ -303,7 +303,7 @@ def cmd_runs(a):
 
 def main(argv=None):
     utf8_stdout()
-    p = argparse.ArgumentParser(prog="radar.py", description=f"sponsor-radar {VERSION}")
+    p = argparse.ArgumentParser(prog="sleuth.py", description=f"sponsor-sleuth {VERSION}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("setup")
